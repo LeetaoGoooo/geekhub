@@ -1,4 +1,4 @@
-import 'package:geekhub/model/post.dart';
+import 'package:geekhub/model/post_header.dart';
 
 /// @file   :   post_event
 /// @author :   leetao
@@ -14,12 +14,11 @@ abstract class PostEvent{
 /// 获取帖子详情事件
 class PostFetched extends PostEvent{
   final String url;
-  final int page;
-
-  PostFetched(this.url,{this.page});
+  PostFetched(this.url);
 }
 
-class PostComment extends PostEvent {
-  final Post post;
-  PostComment(this.post);
+/// 帖子刷新事件
+class PostRefresh extends PostEvent {
+  final PostHeader topic;
+  PostRefresh(this.topic);
 }

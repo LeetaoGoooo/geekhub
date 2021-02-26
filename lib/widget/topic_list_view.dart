@@ -63,6 +63,7 @@ class _TopicListViewState extends State<TopicListView>
       create: (context) => FeedBloc()..add(FeedFetched(widget.tabKey)),
       // ignore: missing_return
       child: BlocBuilder<FeedBloc, FeedState>(builder: (context, state) {
+        print("state change...");
         if (state is FeedInit) {
           return Center(child: CircularProgressIndicator());
         }
@@ -74,16 +75,21 @@ class _TopicListViewState extends State<TopicListView>
         if (state is FeedSuccess) {
           return Stack(
             children: [
-              ListView.builder(
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                // ignore: missing_return
-                itemCount: state.feeds.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return FeedItem(state.feeds[index]);
-                },
-                controller: _scrollController,
-              ),
+              RefreshIndicator(
+                  child: ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemCount: state.feeds.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return FeedItem(state.feeds[index]);
+                    },
+                    controller: _scrollController,
+                  ),
+                  onRefresh: () async {
+                    Future.delayed(Duration(seconds: 3));
+                    BlocProvider.of<FeedBloc>(context)
+                        .add(FeedFetched(widget.tabKey));
+                  }),
               Visibility(
                   visible: showToTopBtn,
                   child: Positioned(

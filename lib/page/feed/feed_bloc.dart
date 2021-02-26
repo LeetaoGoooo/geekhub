@@ -24,8 +24,13 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
           return;
         }
         if (currentState is FeedSuccess) {
-          /// 比较 两次的 feeds 是否一样
-          // yield HomeFeedSuccess(feeds: state.states);
+          String url = 'https://www.geekhub.com';
+          if (event.key != 'all') {
+            url = '$url/${event.key}';
+          }
+          final feeds = await Api.getFeedListByUrl(url);
+          print("get feed:${feeds.length}");
+          yield FeedSuccess(feeds: feeds);
           return;
         }
       } catch (e) {

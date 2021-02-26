@@ -1,4 +1,4 @@
-import 'package:geekhub/model/post.dart';
+import 'package:geekhub/model/post_header.dart';
 
 /// @file   :   post_state
 /// @author :   leetao
@@ -21,22 +21,18 @@ class PostFailure extends PostState{
 }
 
 class PostSuccess extends PostState {
-  final Post post;
+  final PostHeader topic;
 
-  PostSuccess({this.post});
+  PostSuccess(this.topic);
 }
 
 
-class PostCommentRefresh extends PostState {
-  final Post post;
-  PostCommentRefresh({this.post});
+class PostRefreshFailure extends PostState{
+  final PostHeader topic;
+  PostRefreshFailure(this.topic);
 }
 
-class PostCommentSuccess extends PostState {
-  final Post post;
-  PostCommentSuccess({this.post});
-}
-
-class PostCommentFailure extends PostState {
-
+class PostRefreshSuccess extends PostState {
+  final PostHeader topic;
+  PostRefreshSuccess(this.topic);
 }

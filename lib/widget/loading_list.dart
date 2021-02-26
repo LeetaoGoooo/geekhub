@@ -11,7 +11,7 @@ import 'package:shimmer/shimmer.dart';
 class LoadingList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    return SafeArea(
       child: Container(
           width: double.infinity,
           padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 15.0),
