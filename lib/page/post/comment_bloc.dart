@@ -14,7 +14,7 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
       String url = event.url;
       int page = event.page;
       try {
-        if (currentState is CommentInit) {
+        if (currentState is CommentInit || currentState is CommentSuccess) {
           yield CommentLoading();
           var postBody = await Api.getCommentsByUrl(url, page);
           yield CommentSuccess(comment: postBody, page: page, url: url);
@@ -47,6 +47,8 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
         yield CommentFailure();
       }
     }
+
+
   }
 
   @override

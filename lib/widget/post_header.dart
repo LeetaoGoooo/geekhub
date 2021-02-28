@@ -18,11 +18,14 @@ class PostDetailHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Card(
+      elevation: 0.0,
+      margin: const EdgeInsets.all(8.0),
+        child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-            padding: EdgeInsets.only(left: 18.0, right: 18.0, top: 0),
+            padding: const EdgeInsets.all(10.0),
             child: Row(
               children: [
                 CircleAvatarWithPlaceholder(
@@ -74,10 +77,10 @@ class PostDetailHeader extends StatelessWidget {
         ),
         Divider(),
         _getTopicContentWidget(topic.content),
-        Divider(),
+        // Divider(),
       ],
       // ))
-    );
+    ));
   }
 
   Widget _getTopicContentWidget(String content) {

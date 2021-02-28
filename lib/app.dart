@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geekhub/page/home/home_page.dart';
+import 'package:geekhub/page/profile/profile_page.dart';
 
 
 
@@ -10,7 +11,7 @@ class GeekHubApp extends StatefulWidget {
 
 class _GeekHubAppState extends State<GeekHubApp> with TickerProviderStateMixin {
   int _currentIndex = 0;
-  final List<Widget> _children = [HomePage()];
+  final List<Widget> _children = [HomePage(),null,null,ProfilePage()];
 
   @override
   Widget build(BuildContext context) {
@@ -48,8 +49,12 @@ class _GeekHubAppState extends State<GeekHubApp> with TickerProviderStateMixin {
           icon: Icon(Icons.list,),
           label: '节点'
       ),
-      new BottomNavigationBarItem(icon: Icon(Icons.shop),label: '店铺'),
-      new BottomNavigationBarItem(icon: Icon(Icons.person),label: '我的')
+      new BottomNavigationBarItem(
+        icon: Icon(Icons.shop),
+        label: '店铺'),
+      new BottomNavigationBarItem(
+        icon: Icon(Icons.person),
+        label: '我的')
     ];
   }
 }

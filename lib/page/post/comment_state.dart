@@ -25,3 +25,4 @@ class CommentSuccess extends CommentState {
   final String url;
   CommentSuccess({this.comment,this.page,this.url});
 }
+

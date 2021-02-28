@@ -10,15 +10,9 @@ abstract class PostState {
   const PostState();
 }
 
+class PostInit extends PostState {}
 
-class PostInit extends PostState{
-
-}
-
-
-class PostFailure extends PostState{
-
-}
+class PostFailure extends PostState {}
 
 class PostSuccess extends PostState {
   final PostHeader topic;
@@ -26,8 +20,7 @@ class PostSuccess extends PostState {
   PostSuccess(this.topic);
 }
 
-
-class PostRefreshFailure extends PostState{
+class PostRefreshFailure extends PostState {
   final PostHeader topic;
   PostRefreshFailure(this.topic);
 }
@@ -35,4 +28,14 @@ class PostRefreshFailure extends PostState{
 class PostRefreshSuccess extends PostState {
   final PostHeader topic;
   PostRefreshSuccess(this.topic);
+}
+
+class MakeCommentSuccess extends PostState {
+  final PostHeader topic;
+  MakeCommentSuccess(this.topic);
+}
+
+class MakeCommentFailed extends PostState {
+  final PostHeader topic;
+  MakeCommentFailed(this.topic);
 }

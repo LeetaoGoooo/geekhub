@@ -1,8 +1,9 @@
 import 'package:geekhub/common/exceptions.dart';
+import 'package:geekhub/common/utils.dart';
+import 'package:geekhub/model/auth_model.dart';
 import 'package:geekhub/model/feed.dart';
 import 'package:geekhub/model/post_body.dart';
 import 'package:geekhub/model/post_header.dart';
-import 'package:geekhub/model/comment.dart' as db;
 import 'package:html/dom.dart';
 import 'package:html/parser.dart';
 import 'package:http/http.dart' as http;
@@ -10,7 +11,8 @@ import 'package:http/http.dart' as http;
 class Api {
   /// 根据 url 获取 feed list
   static Future<List<Feed>> getFeedListByUrl(String url) async {
-    var resp = await http.get(url);
+    var headers = await Utils.getHeaders();
+    var resp = await http.get(url,headers: headers);
     if (resp.statusCode != 200) {
       throw new ApiException(resp.statusCode);
     }
@@ -53,6 +55,7 @@ class Api {
     });
   }
 
+  /// 获取评论
   static Future<PostBody> getCommentsByUrl(String url, int page) async {
     var id = null;
     var regxp = RegExp(r'(\d+)');
@@ -60,7 +63,9 @@ class Api {
     if (matches != null) {
       id = matches.group(0);
     }
-    var resp = await http.get('https://www.geekhub.com$url?page=$page');
+    var headers = await Utils.getHeaders();
+
+    var resp = await http.get('https://www.geekhub.com$url?page=$page',headers: headers);
     if (resp.statusCode != 200) {
       throw new ApiException(resp.statusCode);
     }
@@ -109,6 +114,32 @@ class Api {
       });
     }
     return PostBody.fromJson({'totalPage': commentPage, 'comments': comments});
+  }
+
+  static Future<AuthModel> getAuth(String url) async {
+    var headers = await Utils.getHeaders();
+    var resp =
+        await http.get(url, headers: headers);
+    if (resp.statusCode != 200) {
+      throw new ApiException(resp.statusCode);
+    }
+    Document doc = parse(resp.body);
+    var formExist = doc.getElementsByClassName('simple_form');
+    var form = formExist[0];
+    if (form != null) {
+      var input = form.querySelector('input');
+      return new AuthModel(
+          token: input.attributes['value'], cookie: resp.headers['set-cookie']);
+    }
+    List<Element> metas = doc.querySelectorAll('head>meta');
+    for (var meta in metas) {
+      if (meta.attributes.containsKey("name") &&
+          meta.attributes['name'] == 'csrf-token') {
+        return new AuthModel(
+            token: meta.attributes['content'],
+            cookie: resp.headers['set-cookie'].split(";")[0]);
+      }
+    }
   }
 
   /// 摸鱼模式
@@ -228,4 +259,6 @@ class Api {
     }
     return feeds;
   }
+
+
 }
