@@ -1,4 +1,4 @@
-import 'Meta.dart';
+import 'package:geekhub/model/meta.dart';
 
 /// @file   :   post.dart
 /// @author :   leetao
