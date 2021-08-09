@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:geekhub/api/api.dart';
+import 'package:geekhub/api/feeds_api.dart';
 import 'package:geekhub/api/auth_api.dart';
 import 'package:geekhub/api/user_api.dart';
 import 'package:geekhub/model/auth_model.dart';
@@ -21,7 +21,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         try {
           yield CaptchaLoading();
           AuthModel authModel =
-              await Api.getAuth('https://www.geekhub.com/users/sign_in');
+              await FeedsApi.getAuth('https://www.geekhub.com/users/sign_in');
           yield CaptchaLoadSuccess(authModel);
         } catch (_) {
           yield CaptchaLoadFailed();
@@ -50,7 +50,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       try {
         yield CaptchaLoading();
         AuthModel authModel =
-            await Api.getAuth('https://www.geekhub.com/users/sign_in');
+            await FeedsApi.getAuth('https://www.geekhub.com/users/sign_in');
         yield CaptchaLoadSuccess(authModel);
       } catch (_) {
         yield CaptchaLoadFailed();

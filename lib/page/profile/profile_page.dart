@@ -1,3 +1,4 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -52,9 +53,10 @@ class ProfilePage extends StatelessWidget {
             leading:
                 CircleAvatarWithPlaceholder(imageUrl: user.avatar, size: 32),
             title: Text(user.id),
-            subtitle: Text("Gbit:0"),
+            subtitle: Text("Gbit:${user.gbit.trim()}"),
             trailing: IconButton(
-              icon: Icon(FontAwesomeIcons.arrowRight),
+              iconSize: 16,
+              icon: _trailingIconWidget(user.messageCount),
               onPressed: () {
                 // 跳转到详情页面
               },
@@ -68,6 +70,26 @@ class ProfilePage extends StatelessWidget {
         child: Center(child: Text("加载失败")),
       );
     });
+  }
+
+  Widget _trailingIconWidget(int messageCount) {
+    if (messageCount > 0) {
+      return Badge(
+        position: BadgePosition.topEnd(top: -6, end: -26),
+        showBadge: true,
+        padding: EdgeInsets.all(8),
+        badgeColor: Colors.red,
+        badgeContent: Text(
+          messageCount.toString(),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+        child: Icon(
+          FontAwesomeIcons.arrowRight,
+          size: 30,
+        ),
+      );
+    }
+    return Icon(FontAwesomeIcons.arrowRight);
   }
 
   Widget _settingsWidget() {

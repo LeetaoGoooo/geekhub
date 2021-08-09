@@ -23,22 +23,24 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_redux: ^0.7.0
-  rxdart: ^0.25.0
-  http: ^0.12.2
-  html: ^0.14.0+4
-  cached_network_image: ^2.5.0
-  flutter_bloc: ^6.1.2
-  flutter_html: ^1.2.0
-  shimmer: ^1.1.2
-  font_awesome_flutter: ^8.11.0
-  equatable: ^1.2.6
-  fluttertoast: ^7.1.6
+  flutter_redux: ^0.8.2
+  rxdart: ^0.27.1
+  http: ^0.13.3
+  html: ^0.15.0
+  cached_network_image: ^3.1.0
+  flutter_bloc: ^7.1.0
+  flutter_html: ^2.1.1
+  shimmer: ^2.0.0
+  font_awesome_flutter: ^9.1.0
+  equatable: ^2.0.3
+  fluttertoast: ^8.0.8
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.0
-  shared_preferences: ^0.5.12+4
+  shared_preferences: ^2.0.6
   meta: ^1.1.8
+  flutter_screenutil: ^5.0.0+2
+  badges: ^2.0.1
 
 dev_dependencies:
   flutter_test:

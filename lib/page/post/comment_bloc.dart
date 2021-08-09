@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:geekhub/api/api.dart';
+import 'package:geekhub/api/feeds_api.dart';
 import 'package:geekhub/page/post/comment_event.dart';
 import 'package:geekhub/page/post/comment_state.dart';
 import 'package:rxdart/rxdart.dart';
@@ -16,7 +16,7 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
       try {
         if (currentState is CommentInit || currentState is CommentSuccess) {
           yield CommentLoading();
-          var postBody = await Api.getCommentsByUrl(url, page);
+          var postBody = await FeedsApi.getCommentsByUrl(url, page);
           yield CommentSuccess(comment: postBody, page: page, url: url);
           return;
         }
@@ -29,7 +29,7 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
         if (currentState is CommentSuccess) {
           if (currentState.comment.totalPage >= currentState.page + 1) {
             yield CommentLoading(comment: currentState.comment);
-            var postBody = await Api.getCommentsByUrl(
+            var postBody = await FeedsApi.getCommentsByUrl(
                 currentState.url, currentState.page + 1);
             postBody.comments += currentState.comment.comments;
             yield CommentSuccess(

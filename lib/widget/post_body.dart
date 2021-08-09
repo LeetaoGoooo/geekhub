@@ -89,7 +89,7 @@ class PostDetailBody extends StatelessWidget {
                   ),
                   Html(
                     data: item.content.trim(),
-                    onLinkTap: (String url) {
+                    onLinkTap: (String url, _, __, ___) {
                       // TODO
                     },
                     style: {
@@ -113,7 +113,7 @@ class PostDetailBody extends StatelessWidget {
                         ),
                         label: Text('评论'),
                         onPressed: () {
-                          callBack(item.id.split("_")[1]);
+                          callBack(item.id.split("_")[1],item.author);
                         },
                       ),
                       TextButton.icon(

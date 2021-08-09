@@ -24,7 +24,7 @@ class CommentApi {
     var user = await new UserRepository().getUser();
     // print('https://www.geekhub.com$url');
     print(user.sessionId);
-    var resp = await http.post('https://www.geekhub.com/comments',
+    var resp = await http.post(Uri.parse('https://www.geekhub.com/comments'),
         headers: {
           "user-agent": "GeekHub App by Leetao",
           'cookie': user.sessionId.split(";")[0],
@@ -45,7 +45,7 @@ class CommentApi {
 
   static Future<CommentForm> getCommentForm(url) async {
     var headers = await Utils.getHeaders();
-    var resp = await http.get(url, headers: headers);
+    var resp = await http.get(Uri.parse(url), headers: headers);
     if (resp.statusCode != 200) {
       throw new ApiException(resp.statusCode);
     }

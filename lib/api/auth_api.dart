@@ -11,7 +11,7 @@ class AuthApi {
       '_rucaptcha': captcha,
       'authenticity_token': authModel.token
     };
-    var resp = await http.post('https://www.geekhub.com/users/sign_in',
+    var resp = await http.post(Uri.parse('https://www.geekhub.com/users/sign_in'),
         body: body, headers: {"user-agent": "GeekHub App By Leetao",'cookie':authModel.cookie});
     var respHeaders = resp.headers;
     if (respHeaders['location'] == 'https://www.geekhub.com/users/sign_in') {

@@ -16,8 +16,9 @@ import 'feed_item.dart';
 
 class TopicListView extends StatefulWidget {
   final String tabKey;
+  final String url;
 
-  TopicListView(this.tabKey);
+  TopicListView({this.tabKey, this.url});
 
   @override
   _TopicListViewState createState() => _TopicListViewState();
@@ -60,7 +61,8 @@ class _TopicListViewState extends State<TopicListView>
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => FeedBloc()..add(FeedFetched(widget.tabKey)),
+      create: (context) =>
+        FeedBloc()..add(FeedFetched(key: widget.tabKey, url: widget.url)),
       // ignore: missing_return
       child: BlocBuilder<FeedBloc, FeedState>(builder: (context, state) {
         print("state change...");
@@ -88,7 +90,7 @@ class _TopicListViewState extends State<TopicListView>
                   onRefresh: () async {
                     Future.delayed(Duration(seconds: 3));
                     BlocProvider.of<FeedBloc>(context)
-                        .add(FeedFetched(widget.tabKey));
+                        .add(FeedFetched(key: widget.tabKey, url: widget.url));
                   }),
               Visibility(
                   visible: showToTopBtn,

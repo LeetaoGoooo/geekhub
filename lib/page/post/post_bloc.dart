@@ -5,14 +5,11 @@
 /// @desc   :   Post bloc
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:geekhub/api/api.dart';
+import 'package:geekhub/api/feeds_api.dart';
 import 'package:geekhub/api/comment_api.dart';
-import 'package:geekhub/model/auth_model.dart';
 import 'package:geekhub/model/comment_form.dart';
-import 'package:geekhub/model/user.dart';
 import 'package:geekhub/page/post/post_event.dart';
 import 'package:geekhub/page/post/post_state.dart';
-import 'package:geekhub/repository/user_repository.dart';
 import 'package:rxdart/rxdart.dart';
 
 class PostBloc extends Bloc<PostEvent, PostState> {
@@ -26,7 +23,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       String url = event.url;
       try {
         if (currentState is PostInit) {
-          var post = await Api.getPostByUrl(url);
+          var post = await FeedsApi.getPostByUrl(url);
           post.currentPage = 1;
           yield PostSuccess(post);
           return;
@@ -39,7 +36,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       String url = event.topic.url;
       try {
         // if (currentState is PostSuccess || currentState is PostRefreshSuccess || currentState is  PostRefreshFailure) {
-        var post = await Api.getPostByUrl(url);
+        var post = await FeedsApi.getPostByUrl(url);
         yield PostRefreshSuccess(post);
         return;
         // }

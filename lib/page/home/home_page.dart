@@ -53,7 +53,7 @@ class _HomePageState extends State<HomePage>  with TickerProviderStateMixin{
         body: TabBarView(
             controller: _tabController,
             children: tabs.map((TabModel choice) {
-              return TopicListView(choice.key);
+              return TopicListView(tabKey: choice.key);
             }).toList()
         )
     );

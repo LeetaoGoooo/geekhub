@@ -12,6 +12,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     final currentState = state;
     print("mapEventToState current state is $currentState");
     if (event is ProfileFetch) {
+
       if (currentState is ProfiletInit) {
         try {
           yield ProfileLoading();
@@ -21,6 +22,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
             return;
           }
           yield ProfileSuccess(_user);
+          User _refreshUser = await new UserRepository().refreshUser(_user.sessionId);
+          yield ProfileSuccess(_refreshUser);
         } catch (e) {
           print(e);
           yield ProfileFailed();

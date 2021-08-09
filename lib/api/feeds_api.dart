@@ -8,27 +8,29 @@ import 'package:html/dom.dart';
 import 'package:html/parser.dart';
 import 'package:http/http.dart' as http;
 
-class Api {
+class FeedsApi {
+
   /// 根据 url 获取 feed list
   static Future<List<Feed>> getFeedListByUrl(String url) async {
+    print("request url:$url");
+    /// TODO 小组模式下 feedDiv 不存在
     var headers = await Utils.getHeaders();
-    var resp = await http.get(url,headers: headers);
+    var resp = await http.get(Uri.parse(url),headers: headers);
     if (resp.statusCode != 200) {
       throw new ApiException(resp.statusCode);
     }
     Document doc = parse(resp.body);
-    Element feedDiv = doc.getElementById("home-feed-list");
+    Element feedDiv = doc.getElementById("e");
 
     if (feedDiv.getElementsByTagName("article").length > 0) {
-      return _getByInfoMode(doc);
+      return Utils.getByInfoMode(doc);
     }
-    return _getByFishMode(doc);
+    return Utils.getByFishMode(doc);
   }
 
   /// 根据 post id 获取详情
   static Future<PostHeader> getPostByUrl(String url) async {
-    print('request url:$url');
-    var resp = await http.get('https://www.geekhub.com$url');
+    var resp = await http.get(Uri.parse('https://www.geekhub.com$url'));
     if (resp.statusCode != 200) {
       throw new ApiException(resp.statusCode);
     }
@@ -65,7 +67,7 @@ class Api {
     }
     var headers = await Utils.getHeaders();
 
-    var resp = await http.get('https://www.geekhub.com$url?page=$page',headers: headers);
+    var resp = await http.get(Uri.parse('https://www.geekhub.com$url?page=$page'),headers: headers);
     if (resp.statusCode != 200) {
       throw new ApiException(resp.statusCode);
     }
@@ -119,7 +121,7 @@ class Api {
   static Future<AuthModel> getAuth(String url) async {
     var headers = await Utils.getHeaders();
     var resp =
-        await http.get(url, headers: headers);
+        await http.get(Uri.parse(url), headers: headers);
     if (resp.statusCode != 200) {
       throw new ApiException(resp.statusCode);
     }
@@ -141,124 +143,4 @@ class Api {
       }
     }
   }
-
-  /// 摸鱼模式
-  static List<Feed> _getByFishMode(Document doc) {
-    List<Feed> feeds = [];
-    Element feedDiv = doc.getElementById("home-feed-list");
-
-    List<Element> feedEleList = feedDiv.querySelectorAll("feed");
-
-    for (var feedEle in feedEleList) {
-      var avatar =
-          feedEle.querySelector("div > div > div > img").attributes['src'];
-
-      var metaEle = feedEle.querySelector("div > div > div >  div > a.sub");
-      var meta = {
-        "name": metaEle.text.trim(),
-        "url": metaEle.attributes['href']
-      };
-
-      var authorEle = feedEle.querySelector("a.sub.font-medium");
-      var author = authorEle.text;
-      var profile = authorEle.attributes['href'];
-
-      var lastReplyEle = feedEle.querySelector('div > div > div > a > span');
-      var lastReplyUser = lastReplyEle.text;
-      var lastReplyTime =
-          feedEle.querySelectorAll("div > div > div > span")[1].text;
-
-      var titleEle = feedEle.querySelector("a.text-base");
-      var title = titleEle.text;
-      var url = titleEle.attributes['href'];
-
-      var commentsCount =
-          feedEle.querySelectorAll("div > div > div > a > span")[2].text;
-
-      var spanList = feedEle.querySelectorAll("div > div > div > div > a");
-      var subDescription = "";
-      var subCatagory = "";
-
-      if (spanList.length == 2) {
-        subCatagory = spanList[0].text;
-      } else if (spanList.length == 3) {
-        subDescription = spanList[0].text;
-        subCatagory = spanList[1].text;
-      }
-
-      Feed homeFeed = Feed.fromJson({
-        "avatar": avatar,
-        "meta": meta,
-        "commentsCount": commentsCount.trim(),
-        "title": title.trim(),
-        "url": url.trim(),
-        "author": author.trim(),
-        "profile": profile.trim(),
-        "lastReplyUser": lastReplyUser.trim(),
-        "lastReplyTime": lastReplyTime.trim(),
-        "subCatagory": subCatagory.trim(),
-        "subDescription": subDescription.trim()
-      });
-      feeds.add(homeFeed);
-    }
-
-    return feeds;
-  }
-
-  /// 信息流模式
-  static List<Feed> _getByInfoMode(Document doc) {
-    List<Feed> feeds = [];
-    Element feedDiv = doc.getElementById("home-feed-list");
-
-    List<Element> articles = feedDiv.getElementsByTagName("article");
-
-    for (var article in articles) {
-      var avatar = article.querySelector("img").attributes['src'];
-      var metaEle = article.querySelector("div > div > div > .meta");
-      var meta = {
-        "name": metaEle.text.trim(),
-        "url": metaEle.attributes['href']
-      };
-      var commentsCount = article.querySelector(".comments-count").text;
-      var spanList = article.querySelectorAll("div > div > div > span");
-      var subDescription = "";
-      var subCatagory = "";
-      if (spanList.length == 2) {
-        subCatagory = spanList[0].text;
-      } else if (spanList.length == 3) {
-        subDescription = spanList[0].text;
-        subCatagory = spanList[1].text;
-      }
-
-      var titleEle = article.querySelector("div > h3 > a");
-      var title = titleEle.text;
-      var url = titleEle.attributes['href'];
-
-      var divMeta = article.querySelector("div.meta");
-      var authorEle = article.querySelectorAll("a")[0];
-      var author = authorEle.querySelector("span").text;
-      var profile = authorEle.querySelector("a").attributes["href"];
-      var replyUserEle = article.querySelectorAll("a")[1];
-      var lastReplyUser = replyUserEle.querySelector("span").text;
-      var lastReplyTime = divMeta.querySelectorAll("span")[2].text;
-
-      Feed homeFeed = Feed.fromJson({
-        "avatar": avatar,
-        "meta": meta,
-        "commentsCount": commentsCount,
-        "title": title,
-        "url": url,
-        "author": author,
-        "profile": profile,
-        "lastReplyUser": lastReplyUser,
-        "lastReplyTime": lastReplyTime,
-        "subCatagory": subCatagory,
-        "subDescription": subDescription
-      });
-      feeds.add(homeFeed);
-    }
-    return feeds;
-  }
-
-
 }

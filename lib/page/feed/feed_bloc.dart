@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:geekhub/api/api.dart';
+import 'package:geekhub/api/feeds_api.dart';
 import 'package:geekhub/page/feed/feed_event.dart';
 import 'package:geekhub/page/feed/feed_state.dart';
 import 'package:rxdart/rxdart.dart';
@@ -15,20 +15,29 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
       try {
         if (currentState is FeedInit) {
           String url = 'https://www.geekhub.com';
-          if (event.key != 'all') {
-            url = '$url/${event.key}';
+          if (event.key != null) {
+            if (event.key != 'all') {
+              url = '$url/${event.key}';
+            }
+          } else {
+            url = '$url${event.url}';
           }
-          final feeds = await Api.getFeedListByUrl(url);
+
+          final feeds = await FeedsApi.getFeedListByUrl(url);
           print("get feed:${feeds.length}");
           yield FeedSuccess(feeds: feeds);
           return;
         }
         if (currentState is FeedSuccess) {
           String url = 'https://www.geekhub.com';
-          if (event.key != 'all') {
-            url = '$url/${event.key}';
+          if (event.key != null) {
+            if (event.key != 'all') {
+              url = '$url/${event.key}';
+            }
+          } else {
+            url = '$url${event.url}';
           }
-          final feeds = await Api.getFeedListByUrl(url);
+          final feeds = await FeedsApi.getFeedListByUrl(url);
           print("get feed:${feeds.length}");
           yield FeedSuccess(feeds: feeds);
           return;

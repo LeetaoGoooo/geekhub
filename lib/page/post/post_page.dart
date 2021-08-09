@@ -3,15 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geekhub/model/comment_action.dart';
 import 'package:geekhub/model/post_header.dart';
+import 'package:geekhub/model/user.dart';
+import 'package:geekhub/page/login/login_bloc.dart';
+import 'package:geekhub/page/login/login_event.dart';
+import 'package:geekhub/page/login/login_page.dart';
 import 'package:geekhub/page/post/comment_bloc.dart';
 import 'package:geekhub/page/post/comment_event.dart';
 import 'package:geekhub/page/post/comment_state.dart';
 import 'package:geekhub/page/post/post_bloc.dart';
 import 'package:geekhub/page/post/post_event.dart';
 import 'package:geekhub/page/post/post_state.dart';
+import 'package:geekhub/repository/user_repository.dart';
 import 'package:geekhub/widget/loading_list.dart';
 import 'package:geekhub/widget/post_body.dart';
 import 'package:geekhub/widget/post_header.dart';
@@ -36,6 +40,8 @@ class _PostState extends State<PostPage> with AutomaticKeepAliveClientMixin {
   PostBloc _postBloc;
   CommentBloc _commentBloc;
   TextEditingController _commentController = new TextEditingController();
+  String replyId;
+
 
   @override
   void dispose() {
@@ -61,11 +67,6 @@ class _PostState extends State<PostPage> with AutomaticKeepAliveClientMixin {
   // ignore: must_call_super
   Widget build(BuildContext context) {
     return Scaffold(
-        floatingActionButton: FloatingActionButton.extended(
-            onPressed: () {
-              _commentDialog(null);
-            },
-            label: Icon(FontAwesomeIcons.comment)),
         body: RefreshIndicator(
             child: CustomScrollView(
               physics: AlwaysScrollableScrollPhysics(),
@@ -106,6 +107,7 @@ class _PostState extends State<PostPage> with AutomaticKeepAliveClientMixin {
                         backgroundColor: Colors.red,
                         textColor: Colors.white,
                         fontSize: 16.0);
+                    _commentController.clear();
                     return SliverToBoxAdapter(
                         child: PostDetailHeader(state.topic));
                   }
@@ -142,63 +144,96 @@ class _PostState extends State<PostPage> with AutomaticKeepAliveClientMixin {
                     return PostDetailBody(state.comment, msg: '加载失败...😭');
                   }
                   return SliverToBoxAdapter(child: LoadingList());
-                }),
+                })
               ],
             ),
             onRefresh: () async {
               _postBloc.add(PostFetched(widget.post.url));
               _commentBloc.add(CommentFetched(widget.post.url, 1));
-            }));
+            }),
+
+        bottomNavigationBar: Container(
+          height: 80,
+          color: Colors.white,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 18.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    height: 60.0,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16.0,
+                      vertical: 5.0,
+                    ),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Color.fromRGBO(232, 232, 232, 1),
+                      ),
+                      borderRadius: BorderRadius.circular(16.0),
+                    ),
+                    child: TextField(
+                      controller: _commentController,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: "说点什么呢...",
+                        hintStyle: TextStyle(
+                          color: Color.fromRGBO(186, 186, 186, 1),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 10.0,
+                ),
+                Container(
+                  width: 65.0,
+                  height: 65.0,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColor,
+                    borderRadius: BorderRadius.circular(16.0),
+                  ),
+                  child: IconButton(icon: Icon(Icons.send,color: Colors.white),onPressed:  () async {
+                    User _user = await new UserRepository().getUser();
+                    if (_user == null) {
+                      Fluttertoast.showToast(
+                          msg: "请登录后评论!",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.red,
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                      Navigator.of(context)
+                          .push(MaterialPageRoute(builder: (context) {
+                        return BlocProvider<LoginBloc>(
+                          create: (context) => LoginBloc()..add(AuthPage()),
+                          child: LoginPage(),
+                        );
+                      }));
+                    }
+                    _postBloc.add(CommentPost(CommentAction.fromJson({
+                      "replyToId": replyId == null ?'0':replyId,
+                      "content": _commentController.text.trim()
+                    })));
+                  },),
+                )
+              ],
+            ),
+          ),
+        )
+    );
   }
 
   @override
   bool get wantKeepAlive => true;
 
-  Widget _commentDialog(replyToId) {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            scrollable: true,
-            title: Text('说点什么'),
-            content: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Form(
-                child: Column(
-                  children: <Widget>[
-                    TextField(
-                      controller: _commentController,
-                      maxLines: null,
-                      minLines: 6,
-                      decoration: new InputDecoration(
-                        focusedBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Colors.blue, width: 1.0),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Colors.grey, width: 1.0),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            actions: [
-              RaisedButton(
-                  color: Colors.blue,
-                  child: Text("评论"),
-                  onPressed: () {
-                    // your code
-                    _postBloc.add(CommentPost(CommentAction.fromJson({
-                      "replyToId": replyToId == null ?'0':replyToId,
-                      "content": _commentController.text.trim()
-                    })));
-                    Navigator.pop(context);
-                  })
-            ],
-          );
-        });
+  void _commentDialog(String replyToId, String author) {
+    setState(() {
+      replyId = replyToId;
+    });
+    String text = "@" + author.trim();
+    _commentController.value  = new TextEditingValue(text: text);
   }
 }

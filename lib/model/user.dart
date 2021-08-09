@@ -6,6 +6,7 @@ class User extends Equatable {
   // int checkDay;
   String sessionId;
   String avatar;
+  int messageCount;
 
   User.fromJson(Map<String, dynamic> json) {
     if (json == null) return;
@@ -14,6 +15,7 @@ class User extends Equatable {
     // checkDay = json['checkDay'];
     sessionId = json['sessionId'];
     avatar = json['avatar'];
+    messageCount = json['messageCount'];
   }
 
   static List<User> listFromJson(List<dynamic> json) {
@@ -27,7 +29,8 @@ class User extends Equatable {
       "id":id,
       "gbit":gbit,
       "sessionId":sessionId,
-      "avatar": avatar
+      "avatar": avatar,
+      "messageCount": messageCount
     };
   }
 
