@@ -66,4 +66,27 @@ class CommentApi {
         targetId: targetId,
         counterBase: counterBase);
   }
+
+  /// 获取每页面的 csrf token，-1 为签到也页面，已签到
+  /// 0 未找到对应的token
+  /// 否则返回 csrf token
+  static Future<String> getCsrfToken(String url,{bool checkPage = false}) async{
+    var headers = await Utils.getHeaders();
+    var resp = await http.get(Uri.parse(url), headers: headers);
+    if (resp.statusCode != 200) {
+      throw new ApiException(resp.statusCode);
+    }
+    if (checkPage && resp.body.indexOf("今日已签到") != -1 ) {
+      return "-1";
+    }
+    Document doc = parse(resp.body);
+    Element head = doc.head;
+    List<Element> metaList = head.getElementsByTagName("meta");
+    for (var meta in metaList) {
+      if (meta.attributes['name'] == 'csrf-token') {
+        return meta.attributes['content'];
+      }
+    }
+    return "0";
+  }
 }

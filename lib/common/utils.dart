@@ -16,10 +16,12 @@ class Utils {
 
 
     /// 摸鱼模式
-    static List<Feed> getByFishMode(Document doc) {
+    static List<Feed> getByFishMode(Document doc,{bool groupOrNot}) {
       List<Feed> feeds = [];
       Element feedDiv = doc.getElementById("home-feed-list");
-
+      if (groupOrNot) {
+        feedDiv = doc.querySelector("main > div");
+      }
       List<Element> feedEleList = feedDiv.querySelectorAll("feed");
 
       for (var feedEle in feedEleList) {
@@ -79,10 +81,12 @@ class Utils {
     }
 
     /// 信息流模式
-    static List<Feed> getByInfoMode(Document doc) {
+    static List<Feed> getByInfoMode(Document doc, {bool groupOrNot = false}) {
       List<Feed> feeds = [];
       Element feedDiv = doc.getElementById("home-feed-list");
-
+      if (groupOrNot) {
+        feedDiv = doc.querySelector("main > div");
+      }
       List<Element> articles = feedDiv.getElementsByTagName("article");
 
       for (var article in articles) {
@@ -179,5 +183,11 @@ class Utils {
       groupsList += getGroupListByGroupEle(moreGroupList);
 
       return groupsList;
+    }
+
+
+    static String getCurrentDateStr() {
+      final DateTime now = DateTime.now();
+      return "${now.year}-${now.month}-${now.day}";
     }
 }

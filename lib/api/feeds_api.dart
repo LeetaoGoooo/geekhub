@@ -11,7 +11,7 @@ import 'package:http/http.dart' as http;
 class FeedsApi {
 
   /// 根据 url 获取 feed list
-  static Future<List<Feed>> getFeedListByUrl(String url) async {
+  static Future<List<Feed>> getFeedListByUrl(String url,{bool groupOrNot = false}) async {
     print("request url:$url");
     /// TODO 小组模式下 feedDiv 不存在
     var headers = await Utils.getHeaders();
@@ -20,12 +20,22 @@ class FeedsApi {
       throw new ApiException(resp.statusCode);
     }
     Document doc = parse(resp.body);
-    Element feedDiv = doc.getElementById("e");
+    return getFeedsByGroupOrNot(doc, groupOrNot);
+  }
 
-    if (feedDiv.getElementsByTagName("article").length > 0) {
-      return Utils.getByInfoMode(doc);
+  static List<Feed> getFeedsByGroupOrNot(Document doc, bool groupOrNot) {
+    bool infoMode = false;
+    print("groupOrNot:{$groupOrNot}");
+    if (!groupOrNot) {
+      Element feedDiv = doc.getElementById("home-feed-list");
+      if (feedDiv.getElementsByTagName("article").length > 0) {
+        infoMode = true;
+      }
     }
-    return Utils.getByFishMode(doc);
+    if (infoMode) {
+      return Utils.getByInfoMode(doc,groupOrNot: groupOrNot);
+    }
+    return Utils.getByFishMode(doc,groupOrNot:groupOrNot);
   }
 
   /// 根据 post id 获取详情

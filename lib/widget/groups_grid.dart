@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geekhub/model/groups.dart';
+import 'package:geekhub/page/groups/group_detail_page.dart';
 import 'package:geekhub/widget/topic_list_view.dart';
 
 import 'circle_avatar.dart';
@@ -31,7 +32,8 @@ class GridGroups extends StatelessWidget {
             onTap: () {
               Navigator.of(context)
                   .push(MaterialPageRoute(builder: (context) {
-                return TopicListView(url:groups[index].url);
+                    return GroupDetailPage(groups[index]);
+                // return TopicListView(url:groups[index].url);
               }));
             },
             child: Container(

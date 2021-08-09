@@ -16,7 +16,9 @@ class UnAuthed extends ProfileState {
 
 class ProfileSuccess extends ProfileState {
   final User user;
-  ProfileSuccess(this.user);
+  final bool checked;
+  final bool status;
+  ProfileSuccess(this.user,this.checked,{this.status});
 }
 
 

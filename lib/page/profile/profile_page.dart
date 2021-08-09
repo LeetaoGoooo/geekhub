@@ -1,6 +1,7 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geekhub/page/login/login_bloc.dart';
 import 'package:geekhub/page/login/login_event.dart';
@@ -10,7 +11,12 @@ import 'package:geekhub/page/profile/profile_event.dart';
 import 'package:geekhub/page/profile/profile_state.dart';
 import 'package:geekhub/widget/circle_avatar.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
+  @override
+  _ProfileState createState() => _ProfileState();
+}
+
+class _ProfileState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,23 +51,43 @@ class ProfilePage extends StatelessWidget {
             ));
       }
       if (state is ProfileSuccess) {
+        print("status :${state.status}");
+        if (state.status != null) {
+          String message = "签到成功!";
+          if (!state.status) {
+            message = "签到失败!";
+          }
+          Fluttertoast.showToast(
+              msg: message,
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.red,
+              textColor: Colors.white,
+              fontSize: 16.0);
+        }
         var user = state.user;
-        return Card(
-          elevation: 0.0,
-          margin: const EdgeInsets.all(8.0),
-          child: ListTile(
-            leading:
-                CircleAvatarWithPlaceholder(imageUrl: user.avatar, size: 32),
-            title: Text(user.id),
-            subtitle: Text("Gbit:${user.gbit.trim()}"),
-            trailing: IconButton(
-              iconSize: 16,
-              icon: _trailingIconWidget(user.messageCount),
-              onPressed: () {
-                // 跳转到详情页面
-              },
+        return Column(
+          children: [
+            Card(
+              elevation: 0.0,
+              margin: const EdgeInsets.all(8.0),
+              child: ListTile(
+                leading: CircleAvatarWithPlaceholder(
+                    imageUrl: user.avatar, size: 32),
+                title: Text(user.id),
+                subtitle: Text("Gbit:${user.gbit.trim()}"),
+                trailing: IconButton(
+                  iconSize: 16,
+                  icon: _trailingIconWidget(user.messageCount),
+                  onPressed: () {
+                    // 跳转到详情页面
+                  },
+                ),
+              ),
             ),
-          ),
+            _checkInWidget(state.checked)
+          ],
         );
       }
       return Card(
@@ -70,6 +96,23 @@ class ProfilePage extends StatelessWidget {
         child: Center(child: Text("加载失败")),
       );
     });
+  }
+
+  Widget _checkInWidget(bool checked){
+    if (checked) {
+        return ElevatedButton.icon(
+          icon: Icon(FontAwesomeIcons.check),
+          label: Text("已签到"),
+        );
+      }
+    return  ElevatedButton.icon(
+      icon: Icon(FontAwesomeIcons.check),
+      label: Text("签到"),
+      onPressed: (){
+        ProfileBloc()..add(CheckIn());
+      },
+    );
+
   }
 
   Widget _trailingIconWidget(int messageCount) {

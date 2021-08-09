@@ -11,6 +11,7 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
   Stream<FeedState> mapEventToState(FeedEvent event) async* {
     final currentState = state;
     print("currentState:$state");
+    bool groupOrNot = false;
     if (event is FeedFetched) {
       try {
         if (currentState is FeedInit) {
@@ -21,9 +22,10 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
             }
           } else {
             url = '$url${event.url}';
+            groupOrNot = true;
           }
 
-          final feeds = await FeedsApi.getFeedListByUrl(url);
+          final feeds = await FeedsApi.getFeedListByUrl(url,groupOrNot: groupOrNot);
           print("get feed:${feeds.length}");
           yield FeedSuccess(feeds: feeds);
           return;
@@ -37,7 +39,7 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
           } else {
             url = '$url${event.url}';
           }
-          final feeds = await FeedsApi.getFeedListByUrl(url);
+          final feeds = await FeedsApi.getFeedListByUrl(url,groupOrNot: groupOrNot);
           print("get feed:${feeds.length}");
           yield FeedSuccess(feeds: feeds);
           return;

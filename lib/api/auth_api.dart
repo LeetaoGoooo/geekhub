@@ -1,6 +1,9 @@
 import 'package:geekhub/common/exceptions.dart';
+import 'package:geekhub/common/utils.dart';
 import 'package:geekhub/model/auth_model.dart';
 import 'package:http/http.dart' as http;
+
+import 'comment_api.dart';
 
 class AuthApi {
   static Future<String> login(
@@ -20,5 +23,21 @@ class AuthApi {
     return respHeaders['set-cookie'].split(";")[0];
   }
 
-  
+  /// 签到
+  static Future<bool> checkIn() async{
+    var headers = await Utils.getHeaders();
+    String authenticityToken = await CommentApi.getCsrfToken('https://www.geekhub.com/checkins');
+    print("checkIn headers:$headers");
+    var body = {
+      "_method": "post",
+      "authenticity_token": authenticityToken
+    };
+    var resp = await http.post(Uri.parse('https://www.geekhub.com/checkins/start'),headers: headers,body: body);
+    print("checkIn code:${resp.statusCode}");
+
+    if (resp.statusCode == 302) {
+      return true;
+    }
+    return false;
+  }
 }
