@@ -44,30 +44,6 @@ class PostBloc extends Bloc<PostEvent, PostState> {
         yield PostRefreshFailure(event.topic);
       }
     }
-
-    if (event is CommentPost) {
-      var currentTopic = null;
-      if (currentState is PostRefreshSuccess) {
-        currentTopic = currentState.topic;
-      }
-      if (currentState is PostRefreshFailure) {
-        currentTopic = currentState.topic;
-      }
-      if (currentState is PostSuccess) {
-        currentTopic = currentState.topic;
-      }
-      if (currentTopic != null) {
-        CommentForm commentForm =
-            await CommentApi.getCommentForm('https://www.geekhub.com${currentTopic.url}');
-        var commentSuccess =
-            await CommentApi.makeComment(event.commentAction, commentForm);
-        if (commentSuccess) {
-          yield MakeCommentSuccess(currentTopic);
-          return;
-        }
-        yield MakeCommentFailed(currentTopic);
-      }
-    }
   }
 
   @override

@@ -122,8 +122,7 @@ class _PostState extends State<PostPage> with AutomaticKeepAliveClientMixin {
                 BlocBuilder<CommentBloc, CommentState>(
                     // ignore: missing_return
                     builder: (context, state) {
-                  print("CommentState is $state");
-                  // return widget here based on BlocA's state
+                  print("CommentState is $state current replyToId:$replyId");
                   if (state is CommentSuccess) {
                     if (state.comment.totalPage == state.page) {
                       return PostDetailBody(state.comment, msg: '已经到底了...😊',callBack: _commentDialog,);
@@ -180,6 +179,17 @@ class _PostState extends State<PostPage> with AutomaticKeepAliveClientMixin {
                         hintStyle: TextStyle(
                           color: Color.fromRGBO(186, 186, 186, 1),
                         ),
+                        suffixIcon: IconButton(
+                          icon:Icon(Icons.clear),
+                          onPressed: () {
+                            _commentController.clear();
+                            if(replyId != null) {
+                              setState(() {
+                                replyId = null;
+                              });
+                            }
+                          },
+                        )
                       ),
                     ),
                   ),
@@ -213,9 +223,15 @@ class _PostState extends State<PostPage> with AutomaticKeepAliveClientMixin {
                         );
                       }));
                     }
-                    _postBloc.add(CommentPost(CommentAction.fromJson({
-                      "replyToId": replyId == null ?'0':replyId,
-                      "content": _commentController.text.trim()
+                    String replyToId  = replyId == null ?'0':replyId;
+                    String comment  = _commentController.text.trim();
+                    setState(() {
+                      replyId = null;
+                    });
+                    _commentController.clear();
+                    _commentBloc.add(CommentPost(CommentAction.fromJson({
+                      "replyToId": replyToId,
+                      "content": comment
                     })));
                   },),
                 )

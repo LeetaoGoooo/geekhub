@@ -1,5 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geekhub/api/comment_api.dart';
 import 'package:geekhub/api/feeds_api.dart';
+import 'package:geekhub/model/comment_form.dart';
 import 'package:geekhub/page/post/comment_event.dart';
 import 'package:geekhub/page/post/comment_state.dart';
 import 'package:rxdart/rxdart.dart';
@@ -48,7 +50,25 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
       }
     }
 
-
+    if (event is CommentPost) {
+      if (currentState is CommentSuccess) {
+        CommentForm commentForm = await CommentApi.getCommentForm(
+            'https://www.geekhub.com${currentState.url}');
+        var commentSuccess =
+            await CommentApi.makeComment(event.commentAction, commentForm);
+        if (commentSuccess) {
+          var postBody = await FeedsApi.getCommentsByUrl(currentState.url, 1);
+          yield CommentSuccess(
+              comment: postBody, page: 1, url: currentState.url);
+          return;
+        } else {
+          yield CommentSuccess(
+              comment: currentState.comment,
+              page: currentState.page,
+              url: currentState.url);
+        }
+      }
+    }
   }
 
   @override

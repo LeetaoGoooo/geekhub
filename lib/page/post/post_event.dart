@@ -1,4 +1,3 @@
-import 'package:geekhub/model/comment_action.dart';
 import 'package:geekhub/model/post_header.dart';
 
 /// @file   :   post_event
@@ -22,11 +21,4 @@ class PostFetched extends PostEvent{
 class PostRefresh extends PostEvent {
   final PostHeader topic;
   PostRefresh(this.topic);
-}
-
-
-
-class CommentPost extends PostEvent {
-  final CommentAction commentAction;
-  CommentPost(this.commentAction);
 }
