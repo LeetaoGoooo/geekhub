@@ -212,8 +212,8 @@ class _PostState extends State<PostPage> with AutomaticKeepAliveClientMixin {
                           toastLength: Toast.LENGTH_SHORT,
                           gravity: ToastGravity.BOTTOM,
                           timeInSecForIosWeb: 1,
-                          backgroundColor: Colors.red,
-                          textColor: Colors.white,
+                          // backgroundColor: Colors.red,
+                          // textColor: Colors.white,
                           fontSize: 16.0);
                       Navigator.of(context)
                           .push(MaterialPageRoute(builder: (context) {

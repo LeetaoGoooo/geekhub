@@ -41,6 +41,7 @@ dependencies:
   meta: ^1.1.8
   flutter_screenutil: ^5.0.0+2
   badges: ^2.0.1
+  flutter_svg: ^0.22.0
 
 dev_dependencies:
   flutter_test:
@@ -58,8 +59,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+    - assets/svg/loading_failed.svg
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

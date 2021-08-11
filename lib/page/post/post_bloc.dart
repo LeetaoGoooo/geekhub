@@ -6,8 +6,6 @@
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geekhub/api/feeds_api.dart';
-import 'package:geekhub/api/comment_api.dart';
-import 'package:geekhub/model/comment_form.dart';
 import 'package:geekhub/page/post/post_event.dart';
 import 'package:geekhub/page/post/post_state.dart';
 import 'package:rxdart/rxdart.dart';

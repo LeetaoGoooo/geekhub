@@ -6,9 +6,11 @@ import 'package:geekhub/page/profile/profile_event.dart';
 import 'package:geekhub/page/profile/profile_state.dart';
 import 'package:geekhub/repository/user_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:rxdart/rxdart.dart';
+
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
-  ProfileBloc() : super(ProfiletInit());
+  ProfileBloc() : super(ProfileInit());
 
   @override
   Stream<ProfileState> mapEventToState(ProfileEvent event) async* {
@@ -24,7 +26,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     }
 
     if (event is ProfileFetch) {
-      if (currentState is ProfiletInit) {
+      if (currentState is ProfileInit) {
         try {
           yield ProfileLoading();
           User _user = await new UserRepository().getUser();
@@ -78,7 +80,19 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       if (checkStatus) {
         prefs.setString("checkIn", Utils.getCurrentDateStr());
       }
-      yield ProfileSuccess(_user, checkStatus, status: checkStatus);
+      yield CheckInState(_user, checkStatus);
+      return;
     }
+  }
+
+  @override
+  Stream<Transition<ProfileEvent, ProfileState>> transformEvents(
+      Stream<ProfileEvent> events,
+      TransitionFunction<ProfileEvent, ProfileState> transitionFn,
+      ) {
+    return super.transformEvents(
+      events.debounceTime(const Duration(milliseconds: 500)),
+      transitionFn,
+    );
   }
 }
