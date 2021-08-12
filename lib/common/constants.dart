@@ -1,6 +1,7 @@
 
 
 import 'package:geekhub/model/tabmodel.dart';
+import 'package:flutter/material.dart';
 
 List<TabModel> TABS = <TabModel>[
     TabModel('全部', 'all'),
@@ -11,3 +12,6 @@ List<TabModel> TABS = <TabModel>[
     TabModel('产品', 'works'),
     TabModel('服务', 'services')
 ];
+
+final Color primaryColor = Colors.white;
+final Color secondaryColor  = Colors.black;

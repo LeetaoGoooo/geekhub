@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geekhub/page/groups/group_page.dart';
 import 'package:geekhub/page/home/home_page.dart';
 import 'package:geekhub/page/profile/profile_page.dart';
+import 'package:geekhub/common/constants.dart';
+import 'package:geekhub/widget/fab_bottom_appbar_item.dart';
 
 
 
@@ -17,26 +20,46 @@ class _GeekHubAppState extends State<GeekHubApp> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
     return MaterialApp(
+        theme: ThemeData(
+          primaryColor: primaryColor,
+          scaffoldBackgroundColor: Color.fromRGBO(245, 246, 250, 1),
+          visualDensity: VisualDensity.adaptivePlatformDensity
+        ),
         home: Scaffold(
-          bottomNavigationBar: BottomNavigationBar(
-            onTap: (value) {
-              setState(() {
-                _currentIndex = value;
-              });
-            },
-            currentIndex: _currentIndex,
-            backgroundColor: colorScheme.surface,
-            selectedItemColor: colorScheme.onSurface,
-            unselectedItemColor: colorScheme.onSurface.withOpacity(.60),
-            selectedLabelStyle: textTheme.caption,
-            unselectedLabelStyle: textTheme.caption,
-            items: _getBottomNavigationBarItemList(),
-          ),
+          // extendBody: true,
+          bottomNavigationBar: FABBottomAppBar(
+              onTabSelected: _selectedFab,
+              selectedColor: secondaryColor,
+              backgroundColor:colorScheme.surface,
+              color: Colors.grey,
+              notchedShape: CircularNotchedRectangle(),
+              items: [
+                FABBottomAppBarItem(iconData:Icons.home_outlined,text: "主页"),
+                FABBottomAppBarItem(iconData: Icons.groups_outlined, text: "小组"),
+                FABBottomAppBarItem(iconData: Icons.shop_outlined, text: "店铺"),
+                FABBottomAppBarItem(iconData: Icons.person_outline, text: "我的")
+              ],
+            ),
           body: _children[_currentIndex],
-    )
+          floatingActionButton: FloatingActionButton(
+            backgroundColor: secondaryColor,
+            foregroundColor: primaryColor,
+            onPressed: () {
+              // Respond to button press
+            },
+            child: Icon(Icons.add),
+          ),
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        )
     );
+  }
+
+
+  void _selectedFab(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
   }
 
 

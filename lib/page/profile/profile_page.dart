@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:geekhub/common/constants.dart';
 import 'package:geekhub/page/login/login_bloc.dart';
 import 'package:geekhub/page/login/login_event.dart';
 import 'package:geekhub/page/login/login_page.dart';
@@ -11,6 +12,7 @@ import 'package:geekhub/page/profile/profile_bloc.dart';
 import 'package:geekhub/page/profile/profile_event.dart';
 import 'package:geekhub/page/profile/profile_state.dart';
 import 'package:geekhub/widget/circle_avatar.dart';
+import 'package:geekhub/widget/profile_loading.dart';
 
 class ProfilePage extends StatelessWidget {
   @override
@@ -69,7 +71,7 @@ class ProfilePage extends StatelessWidget {
       if (state is ProfileSuccess || state is CheckInState) {
         return _profileSuccessWidget(state, context);
       }
-      return CircularProgressIndicator();
+      return ProfileLoadingWidget();
     });
   }
 
@@ -92,19 +94,19 @@ class ProfilePage extends StatelessWidget {
   Widget _trailingIconWidget(int messageCount) {
     if (messageCount > 0) {
       return Badge(
-        position: BadgePosition.topEnd(top: -6, end: -26),
-        showBadge: true,
-        padding: EdgeInsets.all(8),
-        badgeColor: Colors.red,
-        badgeContent: Text(
-          messageCount.toString(),
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-        child: Icon(
-          FontAwesomeIcons.arrowRight,
-          size: 30,
-        ),
-      );
+          position: BadgePosition.topEnd(top: -6, end: -26),
+          showBadge: true,
+          padding: EdgeInsets.all(8),
+          badgeColor: Colors.red,
+          badgeContent: Text(
+            messageCount.toString(),
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          )
+          // child: Icon(
+          //   FontAwesomeIcons.arrowRight,
+          //   size: 30,
+          // ),
+          );
     }
     return Icon(FontAwesomeIcons.arrowRight);
   }
@@ -113,18 +115,26 @@ class ProfilePage extends StatelessWidget {
     return ListView(
       shrinkWrap: true,
       children: [
-        Divider(),
-        ListTile(
-          leading: Icon(
-            FontAwesomeIcons.info,
+        Card(
+          elevation: 0.0,
+          color: primaryColor,
+          child: ListTile(
+            leading: Icon(
+              FontAwesomeIcons.info,
+            ),
+            title: Text("用户协议"),
           ),
-          title: Text("用户协议"),
         ),
-        Divider(),
-        ListTile(leading: Icon(FontAwesomeIcons.comment), title: Text("意见反馈")),
-        Divider(),
-        ListTile(leading: Icon(FontAwesomeIcons.star), title: Text("去评分")),
-        Divider()
+        Card(
+            elevation: 0.0,
+            color: primaryColor,
+            child: ListTile(
+                leading: Icon(FontAwesomeIcons.comment), title: Text("意见反馈"))),
+        Card(
+            elevation: 0.0,
+            color: primaryColor,
+            child: ListTile(
+                leading: Icon(FontAwesomeIcons.star), title: Text("去评分")))
       ],
     );
   }

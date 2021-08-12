@@ -37,7 +37,7 @@ class _HomePageState extends State<HomePage>  with TickerProviderStateMixin{
           title: TabBar(
             controller: _tabController,
             isScrollable: true,
-            indicatorColor: Colors.white,
+            indicatorColor: secondaryColor,
             indicatorSize: TabBarIndicatorSize.label,
             tabs: tabs.map((TabModel choice) {
               return Tab(

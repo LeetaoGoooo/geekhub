@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geekhub/common/constants.dart';
 import 'package:geekhub/model/groups.dart';
 import 'package:geekhub/page/groups/group_detail_page.dart';
 import 'package:geekhub/widget/topic_list_view.dart';
@@ -38,7 +39,7 @@ class GridGroups extends StatelessWidget {
             },
             child: Container(
               decoration: BoxDecoration(
-                color: Color.fromRGBO(245, 246, 250, 1),
+                color: primaryColor,
                 borderRadius: BorderRadius.circular(18.0),
               ),
               child: Column(

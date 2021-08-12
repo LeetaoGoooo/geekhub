@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geekhub/common/constants.dart';
 import 'package:geekhub/model/feed.dart';
 import 'package:geekhub/model/post_header.dart';
 import 'package:geekhub/page/post/comment_bloc.dart';
@@ -41,6 +42,7 @@ class FeedItem extends StatelessWidget {
           );
         },
         child: Container(
+          color: primaryColor,
           padding: EdgeInsets.only(left: 18.0, right: 18.0, top: 0),
           child: Column(children: [
             Row(

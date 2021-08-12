@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geekhub/common/constants.dart';
 import 'package:geekhub/model/comment_action.dart';
 import 'package:geekhub/model/post_header.dart';
 import 'package:geekhub/model/user.dart';
@@ -201,10 +202,10 @@ class _PostState extends State<PostPage> with AutomaticKeepAliveClientMixin {
                   width: 65.0,
                   height: 65.0,
                   decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor,
+                    color: secondaryColor,
                     borderRadius: BorderRadius.circular(16.0),
                   ),
-                  child: IconButton(icon: Icon(Icons.send,color: Colors.white),onPressed:  () async {
+                  child: IconButton(icon: Icon(Icons.send,color: primaryColor),onPressed:  () async {
                     User _user = await new UserRepository().getUser();
                     if (_user == null) {
                       Fluttertoast.showToast(
