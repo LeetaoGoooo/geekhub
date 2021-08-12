@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geekhub/page/groups/group_page.dart';
 import 'package:geekhub/page/home/home_page.dart';
 import 'package:geekhub/page/profile/profile_page.dart';
