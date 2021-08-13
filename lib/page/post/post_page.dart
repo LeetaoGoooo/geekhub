@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geekhub/common/constants.dart';
 import 'package:geekhub/model/comment_action.dart';
@@ -42,7 +43,6 @@ class _PostState extends State<PostPage> with AutomaticKeepAliveClientMixin {
   CommentBloc _commentBloc;
   TextEditingController _commentController = new TextEditingController();
   String replyId;
-
 
   @override
   void dispose() {
@@ -96,7 +96,13 @@ class _PostState extends State<PostPage> with AutomaticKeepAliveClientMixin {
                     return SliverToBoxAdapter(
                         child: Column(children: [
                       PostDetailHeader(widget.post),
-                      Text("加载失败，请重新加载...")
+                      SvgPicture.asset(
+                        'assets/svg/loading_failed.svg',
+                        height: 64,
+                        width: 64,
+                        semanticsLabel: '加载失败',
+                      ),
+                      Text("加载失败，请重新加载..."),
                     ]));
                   }
                   if (state is MakeCommentSuccess) {
@@ -126,9 +132,14 @@ class _PostState extends State<PostPage> with AutomaticKeepAliveClientMixin {
                   print("CommentState is $state current replyToId:$replyId");
                   if (state is CommentSuccess) {
                     if (state.comment.totalPage == state.page) {
-                      return PostDetailBody(state.comment, msg: '已经到底了...😊',callBack: _commentDialog,);
+                      return PostDetailBody(
+                        state.comment,
+                        msg: '已经到底了...😊',
+                        callBack: _commentDialog,
+                      );
                     }
-                    return PostDetailBody(state.comment,callBack: _commentDialog);
+                    return PostDetailBody(state.comment,
+                        callBack: _commentDialog);
                   }
 
                   if (state is CommentLoading) {
@@ -151,7 +162,6 @@ class _PostState extends State<PostPage> with AutomaticKeepAliveClientMixin {
               _postBloc.add(PostFetched(widget.post.url));
               _commentBloc.add(CommentFetched(widget.post.url, 1));
             }),
-
         bottomNavigationBar: Container(
           height: 80,
           color: Colors.white,
@@ -175,23 +185,22 @@ class _PostState extends State<PostPage> with AutomaticKeepAliveClientMixin {
                     child: TextField(
                       controller: _commentController,
                       decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: "说点什么呢...",
-                        hintStyle: TextStyle(
-                          color: Color.fromRGBO(186, 186, 186, 1),
-                        ),
-                        suffixIcon: IconButton(
-                          icon:Icon(Icons.clear),
-                          onPressed: () {
-                            _commentController.clear();
-                            if(replyId != null) {
-                              setState(() {
-                                replyId = null;
-                              });
-                            }
-                          },
-                        )
-                      ),
+                          border: InputBorder.none,
+                          hintText: "说点什么呢...",
+                          hintStyle: TextStyle(
+                            color: Color.fromRGBO(186, 186, 186, 1),
+                          ),
+                          suffixIcon: IconButton(
+                            icon: Icon(Icons.clear),
+                            onPressed: () {
+                              _commentController.clear();
+                              if (replyId != null) {
+                                setState(() {
+                                  replyId = null;
+                                });
+                              }
+                            },
+                          )),
                     ),
                   ),
                 ),
@@ -202,45 +211,45 @@ class _PostState extends State<PostPage> with AutomaticKeepAliveClientMixin {
                   width: 65.0,
                   height: 65.0,
                   decoration: BoxDecoration(
-                    color: secondaryColor,
+                    color: Constants.secondaryColor,
                     borderRadius: BorderRadius.circular(16.0),
                   ),
-                  child: IconButton(icon: Icon(Icons.send,color: primaryColor),onPressed:  () async {
-                    User _user = await new UserRepository().getUser();
-                    if (_user == null) {
-                      Fluttertoast.showToast(
-                          msg: "请登录后评论!",
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.BOTTOM,
-                          timeInSecForIosWeb: 1,
-                          // backgroundColor: Colors.red,
-                          // textColor: Colors.white,
-                          fontSize: 16.0);
-                      Navigator.of(context)
-                          .push(MaterialPageRoute(builder: (context) {
-                        return BlocProvider<LoginBloc>(
-                          create: (context) => LoginBloc()..add(AuthPage()),
-                          child: LoginPage(),
-                        );
-                      }));
-                    }
-                    String replyToId  = replyId == null ?'0':replyId;
-                    String comment  = _commentController.text.trim();
-                    setState(() {
-                      replyId = null;
-                    });
-                    _commentController.clear();
-                    _commentBloc.add(CommentPost(CommentAction.fromJson({
-                      "replyToId": replyToId,
-                      "content": comment
-                    })));
-                  },),
+                  child: IconButton(
+                    icon: Icon(Icons.send, color: Constants.primaryColor),
+                    onPressed: () async {
+                      User _user = await new UserRepository().getUser();
+                      if (_user == null) {
+                        Fluttertoast.showToast(
+                            msg: "请登录后评论!",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIosWeb: 1,
+                            // backgroundColor: Colors.red,
+                            // textColor: Colors.white,
+                            fontSize: 16.0);
+                        Navigator.of(context)
+                            .push(MaterialPageRoute(builder: (context) {
+                          return BlocProvider<LoginBloc>(
+                            create: (context) => LoginBloc()..add(AuthPage()),
+                            child: LoginPage(),
+                          );
+                        }));
+                      }
+                      String replyToId = replyId == null ? '0' : replyId;
+                      String comment = _commentController.text.trim();
+                      setState(() {
+                        replyId = null;
+                      });
+                      _commentController.clear();
+                      _commentBloc.add(CommentPost(CommentAction.fromJson(
+                          {"replyToId": replyToId, "content": comment})));
+                    },
+                  ),
                 )
               ],
             ),
           ),
-        )
-    );
+        ));
   }
 
   @override
@@ -251,6 +260,6 @@ class _PostState extends State<PostPage> with AutomaticKeepAliveClientMixin {
       replyId = replyToId;
     });
     String text = "@" + author.trim();
-    _commentController.value  = new TextEditingValue(text: text);
+    _commentController.value = new TextEditingValue(text: text);
   }
 }

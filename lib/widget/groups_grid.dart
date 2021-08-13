@@ -39,7 +39,7 @@ class GridGroups extends StatelessWidget {
             },
             child: Container(
               decoration: BoxDecoration(
-                color: primaryColor,
+                color: Constants.primaryColor,
                 borderRadius: BorderRadius.circular(18.0),
               ),
               child: Column(

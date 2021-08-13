@@ -42,7 +42,7 @@ class FeedItem extends StatelessWidget {
           );
         },
         child: Container(
-          color: primaryColor,
+          color: Constants.primaryColor,
           padding: EdgeInsets.only(left: 18.0, right: 18.0, top: 0),
           child: Column(children: [
             Row(

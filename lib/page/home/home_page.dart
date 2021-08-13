@@ -19,7 +19,7 @@ class HomePage extends StatefulWidget {
 
 
 class _HomePageState extends State<HomePage>  with TickerProviderStateMixin{
-  List<TabModel> tabs = TABS;
+  List<TabModel> tabs = Constants.TABS;
 
   // 定义底部导航 Tab
   TabController _tabController;
@@ -37,7 +37,7 @@ class _HomePageState extends State<HomePage>  with TickerProviderStateMixin{
           title: TabBar(
             controller: _tabController,
             isScrollable: true,
-            indicatorColor: secondaryColor,
+            indicatorColor: Constants.secondaryColor,
             indicatorSize: TabBarIndicatorSize.label,
             tabs: tabs.map((TabModel choice) {
               return Tab(

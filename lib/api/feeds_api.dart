@@ -69,12 +69,12 @@ class FeedsApi {
 
   /// 获取评论
   static Future<PostBody> getCommentsByUrl(String url, int page) async {
-    var id = null;
-    var regxp = RegExp(r'(\d+)');
-    var matches = regxp.firstMatch(url);
-    if (matches != null) {
-      id = matches.group(0);
-    }
+    // var id = null;
+    // var regxp = RegExp(r'(\d+)');
+    // var matches = regxp.firstMatch(url);
+    // if (matches != null) {
+    //   id = matches.group(0);
+    // }
     var headers = await Utils.getHeaders();
 
     var resp = await http.get(Uri.parse('https://www.geekhub.com$url?page=$page'),headers: headers);
@@ -82,15 +82,15 @@ class FeedsApi {
       throw new ApiException(resp.statusCode);
     }
     Document doc = parse(resp.body);
-    Element main = doc.getElementsByTagName("main")[0];
+    // Element main = doc.getElementsByTagName("main")[0];
 
-    var commentsEle = main.querySelectorAll('div.comment-list');
-    if (id != null) {
-      commentsEle =
-          main.querySelectorAll('div#post-$id-comment-list>div.comment-list');
-    }
+    var commentsEle = doc.querySelectorAll('div.comment-list');
+    // if (id != null) {
+    //   commentsEle =
+    //       main.querySelectorAll('div#post-$id-comment-list>div.comment-list');
+    // }
 
-    var navEle = main.querySelector("nav");
+    var navEle = doc.querySelector("nav");
     var commentPage = 1;
     if (navEle != null) {
       commentPage = navEle.querySelectorAll("li").length;

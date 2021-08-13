@@ -77,7 +77,6 @@ class PostDetailHeader extends StatelessWidget {
         ),
         Divider(),
         _getTopicContentWidget(topic.content),
-        Divider(),
       ],
       // ))
     ));

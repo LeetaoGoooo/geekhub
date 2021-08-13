@@ -21,7 +21,7 @@ class _GeekHubAppState extends State<GeekHubApp> with TickerProviderStateMixin {
     final colorScheme = Theme.of(context).colorScheme;
     return MaterialApp(
         theme: ThemeData(
-          primaryColor: primaryColor,
+          primaryColor: Constants.primaryColor,
           scaffoldBackgroundColor: Color.fromRGBO(245, 246, 250, 1),
           visualDensity: VisualDensity.adaptivePlatformDensity
         ),
@@ -29,7 +29,7 @@ class _GeekHubAppState extends State<GeekHubApp> with TickerProviderStateMixin {
           // extendBody: true,
           bottomNavigationBar: FABBottomAppBar(
               onTabSelected: _selectedFab,
-              selectedColor: secondaryColor,
+              selectedColor: Constants.secondaryColor,
               backgroundColor:colorScheme.surface,
               color: Colors.grey,
               notchedShape: CircularNotchedRectangle(),
@@ -42,8 +42,8 @@ class _GeekHubAppState extends State<GeekHubApp> with TickerProviderStateMixin {
             ),
           body: _children[_currentIndex],
           floatingActionButton: FloatingActionButton(
-            backgroundColor: secondaryColor,
-            foregroundColor: primaryColor,
+            backgroundColor: Constants.secondaryColor,
+            foregroundColor: Constants.primaryColor,
             onPressed: () {
               // Respond to button press
             },

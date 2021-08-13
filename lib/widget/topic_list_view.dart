@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geekhub/page/feed/feed_bloc.dart';
 import 'package:geekhub/page/feed/feed_event.dart';
 import 'package:geekhub/page/feed/feed_state.dart';
+import 'package:geekhub/widget/topic_list_loading.dart';
 
 import 'feed_item.dart';
 
@@ -67,7 +68,7 @@ class _TopicListViewState extends State<TopicListView>
       child: BlocBuilder<FeedBloc, FeedState>(builder: (context, state) {
         print("state change...");
         if (state is FeedInit) {
-          return Center(child: CircularProgressIndicator());
+          return TopicListLoading();
         }
         if (state is FeedFailure) {
           return Center(

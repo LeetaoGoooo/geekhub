@@ -41,7 +41,7 @@ class ProfilePage extends StatelessWidget {
                 semanticsLabel: '加载失败',
               ),
               ElevatedButton.icon(
-                icon: Icon(FontAwesomeIcons.check),
+                icon: Icon(Icons.refresh),
                 label: Text("重新加载"),
                 onPressed: () {
                   context.read<ProfileBloc>().add(ProfileFetch());
@@ -117,7 +117,7 @@ class ProfilePage extends StatelessWidget {
       children: [
         Card(
           elevation: 0.0,
-          color: primaryColor,
+          color: Constants.primaryColor,
           child: ListTile(
             leading: Icon(
               FontAwesomeIcons.info,
@@ -127,12 +127,12 @@ class ProfilePage extends StatelessWidget {
         ),
         Card(
             elevation: 0.0,
-            color: primaryColor,
+            color: Constants.primaryColor,
             child: ListTile(
                 leading: Icon(FontAwesomeIcons.comment), title: Text("意见反馈"))),
         Card(
             elevation: 0.0,
-            color: primaryColor,
+            color: Constants.primaryColor,
             child: ListTile(
                 leading: Icon(FontAwesomeIcons.star), title: Text("去评分")))
       ],
