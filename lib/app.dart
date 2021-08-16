@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geekhub/page/groups/group_page.dart';
 import 'package:geekhub/page/home/home_page.dart';
+import 'package:geekhub/page/new/new_post_bloc.dart';
+import 'package:geekhub/page/new/new_post_event.dart';
+import 'package:geekhub/page/new/new_post_page.dart';
+import 'package:geekhub/page/new/new_post_state.dart';
 import 'package:geekhub/page/profile/profile_page.dart';
 import 'package:geekhub/common/constants.dart';
 import 'package:geekhub/widget/fab_bottom_appbar_item.dart';
@@ -19,13 +24,7 @@ class _GeekHubAppState extends State<GeekHubApp> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    return MaterialApp(
-        theme: ThemeData(
-          primaryColor: Constants.primaryColor,
-          scaffoldBackgroundColor: Color.fromRGBO(245, 246, 250, 1),
-          visualDensity: VisualDensity.adaptivePlatformDensity
-        ),
-        home: Scaffold(
+    return Scaffold(
           // extendBody: true,
           bottomNavigationBar: FABBottomAppBar(
               onTabSelected: _selectedFab,
@@ -46,12 +45,17 @@ class _GeekHubAppState extends State<GeekHubApp> with TickerProviderStateMixin {
             foregroundColor: Constants.primaryColor,
             onPressed: () {
               // Respond to button press
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) =>
+                      BlocProvider<NewPostBloc>(
+                    create: (BuildContext context) => NewPostBloc()..add(PostThemeEvent(postTheme: Constants.POST_THEMES.first)),
+                    child: NewPostPage(),
+                  )));
             },
             child: Icon(Icons.add),
           ),
           floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        )
-    );
+        );
   }
 
 

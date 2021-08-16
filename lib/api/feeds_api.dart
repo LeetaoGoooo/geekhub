@@ -13,7 +13,6 @@ class FeedsApi {
   /// 根据 url 获取 feed list
   static Future<List<Feed>> getFeedListByUrl(String url,{bool groupOrNot = false}) async {
     print("request url:$url");
-    /// TODO 小组模式下 feedDiv 不存在
     var headers = await Utils.getHeaders();
     var resp = await http.get(Uri.parse(url),headers: headers);
     if (resp.statusCode != 200) {
@@ -40,6 +39,7 @@ class FeedsApi {
 
   /// 根据 post id 获取详情
   static Future<PostHeader> getPostByUrl(String url) async {
+    print(url);
     var resp = await http.get(Uri.parse('https://www.geekhub.com$url'));
     if (resp.statusCode != 200) {
       throw new ApiException(resp.statusCode);
@@ -47,15 +47,19 @@ class FeedsApi {
     Document doc = parse(resp.body);
     Element main = doc.getElementsByTagName("main")[0];
     var title = main.querySelectorAll("div>div")[1].text;
-    var authorEle = main.querySelector("div.box6>div.flex");
+    var authorEle = main.querySelector("div>div.flex");
     var author = authorEle.querySelector("div > img").attributes['title'];
     var avatar = authorEle.querySelector("div > img").attributes['src'];
     var publishTime =
         main.querySelectorAll('.flex-1>div.flex-row>div>span')[1].text;
-    var content = main.querySelector("div.story").innerHtml;
+    List<Element> contentEleList = main.querySelectorAll("div.story");
+    var content = "";
+    for (var contentEle in contentEleList) {
+        content += contentEle.innerHtml;
+    }
+
     var metaEle = main.querySelectorAll("div>div>ol>li")[2].querySelector("a");
     var meta = {"name": metaEle.text, "url": metaEle.attributes['href']};
-
     return PostHeader.fromJson({
       "url": url,
       "avatar": avatar,

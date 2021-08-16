@@ -8,6 +8,8 @@ class User extends Equatable {
   String avatar;
   int messageCount;
 
+  User({this.id,this.gbit,this.sessionId,this.avatar,this.messageCount});
+
   User.fromJson(Map<String, dynamic> json) {
     if (json == null) return;
     id = json['id'];

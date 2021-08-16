@@ -6,6 +6,9 @@ class Meta {
   String url;
   bool status; // 表示状态
 
+  Meta({this.id, this.name, this.url, this.status});
+
+
   Meta.fromJson(Map<String, dynamic> json) {
     if (json == null) return;
     id = json['id'];

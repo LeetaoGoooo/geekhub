@@ -18,6 +18,10 @@ class PostHeader {
   int commentPage;
   int currentPage;
 
+
+  PostHeader({this.url, this.avatar, this.title, this.author, this.content,
+    this.publishTime, this.meta, this.commentPage, this.currentPage});
+
   PostHeader.fromJson(Map<String, dynamic> json) {
     if (json == null) return;
     url = json['url'];

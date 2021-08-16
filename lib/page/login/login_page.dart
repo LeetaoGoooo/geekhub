@@ -6,7 +6,6 @@ import 'package:geekhub/page/home/home_page.dart';
 import 'package:geekhub/page/login/login_bloc.dart';
 import 'package:geekhub/page/login/login_event.dart';
 import 'package:geekhub/page/login/login_state.dart';
-import 'package:geekhub/page/profile/profile_page.dart';
 
 /// file        : login_page.dart
 /// descrption  : 登录页面
@@ -15,7 +14,7 @@ import 'package:geekhub/page/profile/profile_page.dart';
 
 class LoginPage extends StatelessWidget {
   TextEditingController _userNameController = new TextEditingController();
-  TextEditingController _passworrdController = new TextEditingController();
+  TextEditingController _passwordController = new TextEditingController();
   TextEditingController _captchaController = new TextEditingController();
 
   @override
@@ -38,7 +37,7 @@ class LoginPage extends StatelessWidget {
                 ),
               ),
               TextFormField(
-                controller: _passworrdController,
+                controller: _passwordController,
                 decoration: InputDecoration(
                   icon: Icon(FontAwesomeIcons.lock),
                   helperText: '输入密码',
@@ -93,7 +92,7 @@ class LoginPage extends StatelessWidget {
                 onPressed: () {
                   // Respond to button press
                   var userName = _userNameController.text;
-                  var password = _passworrdController.text;
+                  var password = _passwordController.text;
                   var captcha = _captchaController.text;
                   if (userName.trim().isEmpty ||
                       password.trim().isEmpty ||

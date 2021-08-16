@@ -1,4 +1,4 @@
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 import 'package:geekhub/api/feeds_api.dart';
 import 'package:geekhub/api/auth_api.dart';
 import 'package:geekhub/common/exceptions.dart';
