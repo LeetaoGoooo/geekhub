@@ -9,7 +9,7 @@ class Post {
   String title;
   String content;
   String clubId;
-  String shopId;
+  String shopId = "0";
 
   Post({this.authenticityToken,this.title,this.content,this.clubId,this.shopId});
 

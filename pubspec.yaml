@@ -42,7 +42,8 @@ dependencies:
   flutter_screenutil: ^5.0.0+2
   badges: ^2.0.1
   flutter_svg: ^0.22.0
-  backdrop: ^0.6.2
+  crypto: ^3.0.1
+  path: ^1.8.0
 
 dev_dependencies:
   flutter_test:

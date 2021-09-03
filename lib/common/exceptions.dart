@@ -7,3 +7,13 @@ class ApiException implements Exception {
 
 class AuthException implements Exception {
 }
+
+class FileNotFound implements Exception {
+  String message;
+  FileNotFound(this.message);
+}
+
+class Md5Error implements Exception {
+  String message;
+  Md5Error(this.message);
+}

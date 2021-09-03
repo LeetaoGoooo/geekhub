@@ -29,13 +29,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.6.1"
-  backdrop:
-    dependency: "direct main"
-    description:
-      name: backdrop
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "0.6.2"
   badges:
     dependency: "direct main"
     description:
@@ -142,7 +135,7 @@ packages:
     source: hosted
     version: "1.0.3"
   crypto:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: crypto
       url: "https://pub.flutter-io.cn"
@@ -395,7 +388,7 @@ packages:
     source: hosted
     version: "2.0.0"
   path:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: path
       url: "https://pub.flutter-io.cn"
