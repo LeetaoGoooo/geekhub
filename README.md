@@ -37,7 +37,7 @@ Geekhub 是采用 MIT 许可的开源项目，使用完全免费。
 
 *   [支付宝](http://ww1.sinaimg.cn/large/006wYWbGly1fm10itkjb6j30aj0a9t8w.jpg)
 
-*   [微信支付](http://ww1.sinaimg.cn/large/006wYWbGly1fm10jihygsj309r09tglw.jpg)
+*   [微信支付](http://ww1.sinaimg.cn/large/006wYWbGly1gucyjbbwtej60eu0fnaap02.jpg)
 
 
 ## 作者
