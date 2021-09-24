@@ -3,9 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geekhub/common/constants.dart';
 import 'package:geekhub/model/post_theme.dart';
-import 'package:geekhub/model/post_header.dart';
-import 'package:geekhub/model/post_model.dart';
-import 'package:geekhub/model/user.dart';
 import 'package:geekhub/page/new/new_post_bloc.dart';
 import 'package:geekhub/page/new/new_post_event.dart';
 import 'package:geekhub/page/new/new_post_state.dart';
@@ -14,7 +11,6 @@ import 'package:geekhub/page/post/comment_event.dart';
 import 'package:geekhub/page/post/post_bloc.dart';
 import 'package:geekhub/page/post/post_event.dart';
 import 'package:geekhub/page/post/post_page.dart';
-import 'package:geekhub/repository/user_repository.dart';
 
 /// @file   :   new_post_widget
 /// @author :   leetao

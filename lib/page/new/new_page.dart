@@ -10,12 +10,12 @@ import 'package:geekhub/page/new/new_post_widget.dart';
 /// @email  :   leetao94@gmail.com
 /// @desc   :
 
-class NewPostPage extends StatefulWidget {
+class NewPage extends StatefulWidget {
   @override
   _NewPostPageState createState() => _NewPostPageState();
 }
 
-class _NewPostPageState extends State<NewPostPage>
+class _NewPostPageState extends State<NewPage>
     with SingleTickerProviderStateMixin,AutomaticKeepAliveClientMixin {
   TabController _tabController;
   String _title = "发布话题";
